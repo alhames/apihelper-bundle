@@ -1,0 +1,8 @@
+parameters:
+
+    apihelper.services: []
+    apihelper.manager.class: 'ApiHelperBundle\Core\ClientManager'
+    apihelper.oauth2.filter: ''
+    apihelper.auth.controller: ~
+    apihelper.route.default: ~
+    apihelper.route.login: ~

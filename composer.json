@@ -1,0 +1,27 @@
+{
+  "name": "alhames/apihelper-bundle",
+  "type": "symfony-bundle",
+  "description": "Symfony ApiHelper Bundle",
+  "homepage": "https://github.com/alhames/apihelper-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pavel Logachev",
+      "email": "alhames@mail.ru",
+      "homepage": "https://alhames.ru/"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/alhames/apihelper-bundle/issues"
+  },
+  "require": {
+    "php": "^5.5 || ^7.0",
+    "symfony/framework-bundle": "^2.7 || ^3.0",
+    "symfony/yaml": "^2.7 || ^3.0",
+    "alhames/apihelper-core": "^0.1",
+    "alhames/apihelper-facebook": "^0.1"
+  },
+  "autoload": {
+    "psr-4": { "ApiHelperBundle\\": "src/" }
+  }
+}

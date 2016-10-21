@@ -1,0 +1,15 @@
+# OAuth2
+auth_oauth2_login:
+    path: '/login/{service}'
+    defaults: { _controller: '%apihelper.auth.controller%:oauth2Start', action: 'login' }
+    requirements: { service: '%apihelper.oauth2.filter%' }
+
+auth_oauth2_connect:
+    path: '/connect/{service}'
+    defaults: { _controller: '%apihelper.auth.controller%:oauth2Start', action: 'connect' }
+    requirements: { service: '%apihelper.oauth2.filter%' }
+
+auth_oauth2_callback:
+    path: '/callback/{service}'
+    defaults: { _controller: '%apihelper.auth.controller%:oauth2Finish' }
+    requirements: { service: '%apihelper.oauth2.filter%' }

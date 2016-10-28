@@ -40,4 +40,14 @@ class ClientManager
 
         return new $class(array_merge($this->services[$service], $options));
     }
+
+    /**
+     * @param string $service
+     *
+     * @return bool
+     */
+    public function has($service)
+    {
+        return isset($this->services[$service]);
+    }
 }

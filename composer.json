@@ -17,11 +17,10 @@
   "require": {
     "php": "^5.5 || ^7.0",
     "symfony/framework-bundle": "^2.7 || ^3.0",
-    "symfony/yaml": "^2.7 || ^3.0",
-    "alhames/apihelper-core": "^0.1",
-    "alhames/apihelper-facebook": "^0.1"
+    "symfony/security-bundle":  "^2.7 || ^3.0",
+    "alhames/apihelper": "*"
   },
   "autoload": {
-    "psr-4": { "ApiHelperBundle\\": "src/" }
+    "psr-4": { "ApiHelperBundle\\": "src/ApiHelperBundle/" }
   }
 }

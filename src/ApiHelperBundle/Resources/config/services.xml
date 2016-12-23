@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="apihelper.manager" class="%apihelper.manager.class%">
+            <argument type="collection" />
+        </service>
+
+        <service id="apihelper.security.authentication.listener"
+                 class="%apihelper.security.authentication.listener.class%"
+                 parent="security.authentication.listener.abstract"
+                 public="false"
+                 abstract="true" />
+
+        <service id="apihelper.security.authentication.provider"
+                 class="%apihelper.security.authentication.provider.class%"
+                 public="false"
+                 abstract="true">
+            <argument /> <!-- User Provider -->
+            <argument /> <!-- User Checker -->
+            <argument /> <!-- Provider-shared Key -->
+            <argument type="service" id="apihelper.manager" />
+        </service>
+    </services>
+</container>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="apihelper_login" path="/login/{service}">
+        <default key="_controller">%apihelper.security.controller%:login</default>
+        <default key="providerKey">%apihelper.security.default_provider%</default>
+        <requirement key="service">%apihelper.security.requirements.login%</requirement>
+    </route>
+
+    <route id="apihelper_connect" path="/connect/{service}">
+        <default key="_controller">%apihelper.security.controller%:connect</default>
+        <requirement key="service">%apihelper.security.requirements.connect%</requirement>
+    </route>
+
+    <route id="apihelper_callback" path="/callback/{service}">
+        <default key="_controller">%apihelper.security.controller%:callback</default>
+        <requirement key="service">%apihelper.security.requirements.callback%</requirement>
+    </route>
+</routes>

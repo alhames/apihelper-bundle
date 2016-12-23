@@ -1,5 +1,0 @@
-services:
-
-    apihelper.manager:
-        class: '%apihelper.manager.class%'
-        arguments: ['%apihelper.services%']

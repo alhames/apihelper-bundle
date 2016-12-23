@@ -3,7 +3,6 @@
 namespace ApiHelperBundle\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
-use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
@@ -13,12 +12,14 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class OAuthFactory extends AbstractFactory
 {
+    const PREFIX = 'apihelper.security.';
+
     /**
      * {@inheritdoc}
      */
     public function create(ContainerBuilder $container, $id, $config, $userProviderId, $defaultEntryPointId)
     {
-        $parameterId = 'apihelper.security.options';
+        $parameterId = self::PREFIX.'options';
         $options = $container->hasParameter($parameterId) ? $container->getParameter($parameterId) : [];
         $options[$id] = $config;
         $container->setParameter($parameterId, $options);
@@ -47,7 +48,7 @@ class OAuthFactory extends AbstractFactory
      */
     protected function createAuthProvider(ContainerBuilder $container, $id, $config, $userProviderId)
     {
-        $provider = 'apihelper.security.authentication.provider.'.$id;
+        $provider = self::PREFIX.'authentication.provider.'.$id;
         $container
             ->setDefinition($provider, new DefinitionDecorator('apihelper.security.authentication.provider'))
             ->replaceArgument(0, new Reference($userProviderId))
@@ -63,6 +64,6 @@ class OAuthFactory extends AbstractFactory
      */
     protected function getListenerId()
     {
-        return 'apihelper.security.authentication.listener';
+        return self::PREFIX.'authentication.listener';
     }
 }

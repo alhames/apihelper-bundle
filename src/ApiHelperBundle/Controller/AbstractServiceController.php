@@ -105,7 +105,7 @@ abstract class AbstractServiceController extends Controller
             return $this->createErrorRedirect('invalid_state');
         }
 
-        $options = $request->get(Security::STATE_ID.$state);
+        $options = $request->getSession()->get(Security::STATE_ID.$state);
         if (!isset($options['action']) || Security::ACTION_CONNECT !== $options['action']) {
             return $this->createErrorRedirect('invalid_action');
         }

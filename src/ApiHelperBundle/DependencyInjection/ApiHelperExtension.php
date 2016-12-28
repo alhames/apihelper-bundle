@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the API Helper Bundle package.
+ *
+ * (c) Pavel Logachev <alhames@mail.ru>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiHelperBundle\DependencyInjection;
 
 use ApiHelper\Core\OAuth2ClientInterface;
@@ -14,7 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
- * Class ApiHelperExtension
+ * Class ApiHelperExtension.
  */
 class ApiHelperExtension extends Extension
 {
@@ -100,7 +109,6 @@ class ApiHelperExtension extends Extension
         }
 
         if ($config['captcha']['enabled']) {
-
             if (empty($config['captcha']['client_id']) || empty($config['captcha']['client_secret'])) {
                 throw new \LogicException('client_id and client_secret must be defined.');
             }

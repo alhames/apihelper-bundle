@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the API Helper Bundle package.
+ *
+ * (c) Pavel Logachev <alhames@mail.ru>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiHelperBundle\Controller;
 
 use ApiHelper\Exception\RequestTokenException;
@@ -246,8 +255,9 @@ abstract class AbstractServiceController extends Controller
      * @param Request         $request
      * @param AbstractAccount $account
      *
-     * @return RedirectResponse
      * @throws ConnectAccountException
+     *
+     * @return RedirectResponse
      */
     abstract protected function connectAccount(Request $request, AbstractAccount $account);
 }

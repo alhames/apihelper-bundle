@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the API Helper Bundle package.
+ *
+ * (c) Pavel Logachev <alhames@mail.ru>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiHelperBundle\Security\Http\Firewall;
 
 use ApiHelperBundle\Security\Core\Authentication\Provider\OAuthProvider;
@@ -10,7 +19,7 @@ use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Http\Firewall\AbstractAuthenticationListener;
 
 /**
- * Class OAuthListener
+ * Class OAuthListener.
  */
 class OAuthListener extends AbstractAuthenticationListener
 {
@@ -40,7 +49,7 @@ class OAuthListener extends AbstractAuthenticationListener
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function attemptAuthentication(Request $request)
     {

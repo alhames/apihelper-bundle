@@ -24,6 +24,7 @@ class Configuration implements ConfigurationInterface
             ->end()
         ;
         $this->addServicesSection($rootNode);
+        $this->addCaptchaSection($rootNode);
 
         return $treeBuilder;
     }
@@ -83,6 +84,30 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                 ->end() // services
+            ->end()
+        ;
+    }
+
+    /**
+     * @param ArrayNodeDefinition $rootNode
+     */
+    private function addCaptchaSection(ArrayNodeDefinition $rootNode)
+    {
+        $rootNode
+            ->children()
+                ->arrayNode('captcha')
+                    ->canBeEnabled()
+                    ->children()
+                        ->scalarNode('client_id')->cannotBeEmpty()->end()
+                        ->scalarNode('client_secret')->cannotBeEmpty()->end()
+                        ->scalarNode('storage')->defaultNull()->end()
+                        ->scalarNode('storage_key')->defaultValue('apihelper.captcha.route_%%s.ip_%%s')->end()
+                        ->integerNode('ttl')->defaultValue(86400)->end()
+                        ->arrayNode('routes')
+                            ->prototype('integer')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
     }

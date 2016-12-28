@@ -7,7 +7,10 @@ use ApiHelperBundle\Controller\AbstractServiceController;
 use PhpHelper\Str;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -26,6 +29,10 @@ class ApiHelperExtension extends Extension
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('parameters.xml');
         $loader->load('services.xml');
+
+        if (class_exists('Twig_Extension') && $config['captcha']['enabled']) {
+            $loader->load('twig.xml');
+        }
 
         $connectServices = [];
         $loginServices = [];
@@ -90,6 +97,26 @@ class ApiHelperExtension extends Extension
             $container->setParameter('apihelper.security.requirements.callback', implode('|', array_unique(array_merge($loginServices, $connectServices))));
 
             $container->getDefinition('apihelper.manager')->replaceArgument(0, $config['services']);
+        }
+
+        if ($config['captcha']['enabled']) {
+
+            if (empty($config['captcha']['client_id']) || empty($config['captcha']['client_secret'])) {
+                throw new \LogicException('client_id and client_secret must be defined.');
+            }
+
+            $clientOptions = [
+                'client_id' => $config['captcha']['client_id'],
+                'client_secret' => $config['captcha']['client_secret'],
+            ];
+
+            $captchaManager = new DefinitionDecorator('apihelper.captcha.manager.abstract');
+            $captchaManager->addArgument(new Definition('ApiHelper\Client\ReCaptchaClient', [$clientOptions]));
+            $captchaManager->addArgument(isset($config['captcha']['storage']) ? new Reference($config['captcha']['storage']) : null);
+            $captchaManager->addArgument($config['captcha']['routes']);
+            $captchaManager->addArgument($config['captcha']['ttl']);
+            $captchaManager->addArgument($config['captcha']['storage_key']);
+            $container->setDefinition('apihelper.captcha.manager', $captchaManager);
         }
     }
 

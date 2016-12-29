@@ -52,7 +52,7 @@ abstract class AbstractServiceController extends Controller
             throw new \LogicException(sprintf('Options for provider "%s" is not defined.', $providerKey));
         }
 
-        if (!$this->container->get('apihelper.manager')->loginSupported($service, $providerKey)) {
+        if (!$this->container->get('apihelper.manager')->isLoginSupported($service, $providerKey)) {
             throw new NotFoundHttpException();
         }
 
@@ -82,7 +82,7 @@ abstract class AbstractServiceController extends Controller
      */
     public function connectAction(Request $request, $service)
     {
-        if (!$this->container->get('apihelper.manager')->connectSupported($service)) {
+        if (!$this->container->get('apihelper.manager')->isConnectSupported($service)) {
             throw new NotFoundHttpException();
         }
 
@@ -120,7 +120,7 @@ abstract class AbstractServiceController extends Controller
         }
 
         $serviceManager = $this->container->get('apihelper.manager');
-        if (!$serviceManager->connectSupported($service)) {
+        if (!$serviceManager->isConnectSupported($service)) {
             throw new NotFoundHttpException();
         }
 

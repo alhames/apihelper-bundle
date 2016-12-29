@@ -102,7 +102,7 @@ class ServiceManager
      *
      * @return bool
      */
-    public function loginSupported($alias, $providerKey)
+    public function isLoginSupported($alias, $providerKey)
     {
         if (!$this->has($alias)) {
             return false;
@@ -120,8 +120,42 @@ class ServiceManager
      *
      * @return bool
      */
-    public function connectSupported($alias)
+    public function isConnectSupported($alias)
     {
         return $this->has($alias) && $this->config[$alias]['security_connect'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getConnectSupportedServices()
+    {
+        $services = [];
+        
+        foreach ($this->config as $alias => $config) {
+            if ($config['security_connect']) {
+                $services[] = $alias;
+            }
+        }
+        
+        return $services;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getLoginSupportedServices($providerKey)
+    {
+        $services = [];
+
+        foreach ($this->config as $alias => $config) {
+            if (true === $config['security_login']) {
+                $services[] = $alias;
+            } elseif (is_array($config['security_login']) && in_array($providerKey, $config['security_login'])) {
+                $services[] = $alias;
+            }
+        }
+
+        return $services;
     }
 }

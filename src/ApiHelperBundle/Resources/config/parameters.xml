@@ -6,6 +6,8 @@
 
     <parameters>
         <parameter key="apihelper.manager.class">ApiHelperBundle\Core\ServiceManager</parameter>
+        <parameter key="apihelper.captcha.manager.class">ApiHelperBundle\Core\CaptchaManager</parameter>
+        <parameter key="apihelper.captcha.subscriber.class">ApiHelperBundle\EventListener\CaptchaSubscriber</parameter>
         <parameter key="apihelper.security.authentication.listener.class">ApiHelperBundle\Security\Http\Firewall\OAuthListener</parameter>
         <parameter key="apihelper.security.authentication.provider.class">ApiHelperBundle\Security\Core\Authentication\Provider\OAuthProvider</parameter>
         <parameter key="apihelper.security.default_provider">main</parameter>

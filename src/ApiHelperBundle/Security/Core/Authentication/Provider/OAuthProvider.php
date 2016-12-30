@@ -86,6 +86,7 @@ class OAuthProvider implements AuthenticationProviderInterface
 
         try {
             $account->authorize($credentials['code']);
+            // preload account id
             $accountId = $account->getId();
         } catch (RequestTokenException $e) {
             $exception = new BadCredentialsException($e->getMessage(), 0, $e);
@@ -102,10 +103,9 @@ class OAuthProvider implements AuthenticationProviderInterface
         }
 
         try {
-            $user = $this->userProvider->loadUserByServiceAccount($credentials['service'], $accountId);
+            $user = $this->userProvider->loadUserByServiceAccount($account);
         } catch (ServiceAccountNotFoundException $e) {
-            $e->setAccountId($accountId);
-            $e->setService($credentials['service']);
+            $e->setAccount($account);
             $e->setToken($token);
             throw $e;
         } catch (\Exception $e) {

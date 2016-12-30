@@ -57,11 +57,11 @@ class CaptchaSubscriber implements EventSubscriberInterface
     /**
      * CaptchaListener constructor.
      *
-     * @param HttpUtils                             $httpUtils
-     * @param CaptchaManager                        $captchaManager
-     * @param RequestStack                          $requestStack
-     * @param array                                 $options
-     * @param AuthenticationFailureHandlerInterface $failureHandler
+     * @param HttpUtils                                  $httpUtils
+     * @param CaptchaManager                             $captchaManager
+     * @param RequestStack                               $requestStack
+     * @param array|null                                 $options
+     * @param AuthenticationFailureHandlerInterface|null $failureHandler
      */
     public function __construct(HttpUtils $httpUtils, CaptchaManager $captchaManager, RequestStack $requestStack, array $options = null, AuthenticationFailureHandlerInterface $failureHandler = null)
     {
@@ -75,7 +75,7 @@ class CaptchaSubscriber implements EventSubscriberInterface
     /**
      * @param GetResponseEvent $event
      *
-     * @return Response
+     * @return Response|null
      */
     public function onKernelRequest(GetResponseEvent $event)
     {

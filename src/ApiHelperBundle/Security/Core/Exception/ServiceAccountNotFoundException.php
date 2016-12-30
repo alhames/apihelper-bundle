@@ -11,6 +11,7 @@
 
 namespace ApiHelperBundle\Security\Core\Exception;
 
+use ApiHelperBundle\Account\AbstractAccount;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 /**
@@ -18,11 +19,8 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
  */
 class ServiceAccountNotFoundException extends AuthenticationException
 {
-    /** @var string|int */
-    protected $accountId;
-
-    /** @var string */
-    protected $service;
+    /** @var AbstractAccount */
+    protected $account;
 
     /**
      * {@inheritdoc}
@@ -33,49 +31,21 @@ class ServiceAccountNotFoundException extends AuthenticationException
     }
 
     /**
-     * Get the account id.
-     *
-     * @return string|int
+     * @return AbstractAccount
      */
-    public function getAccountId()
+    public function getAccount()
     {
-        return $this->accountId;
+        return $this->account;
     }
 
     /**
-     * Set the account id.
-     *
-     * @param string|int $accountId
+     * @param AbstractAccount $account
      *
      * @return static
      */
-    public function setAccountId($accountId)
+    public function setAccount(AbstractAccount $account)
     {
-        $this->accountId = $accountId;
-
-        return $this;
-    }
-
-    /**
-     * Get the service.
-     *
-     * @return string
-     */
-    public function getService()
-    {
-        return $this->service;
-    }
-
-    /**
-     * Set the service.
-     *
-     * @param string $service
-     *
-     * @return static
-     */
-    public function setService($service)
-    {
-        $this->service = $service;
+        $this->account = $account;
 
         return $this;
     }
@@ -85,7 +55,7 @@ class ServiceAccountNotFoundException extends AuthenticationException
      */
     public function serialize()
     {
-        return serialize([$this->accountId, $this->service, parent::serialize()]);
+        return serialize([$this->account, parent::serialize()]);
     }
 
     /**
@@ -93,16 +63,8 @@ class ServiceAccountNotFoundException extends AuthenticationException
      */
     public function unserialize($str)
     {
-        list($this->accountId, $this->service, $parentData) = unserialize($str);
+        list($this->account, $parentData) = unserialize($str);
 
         parent::unserialize($parentData);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMessageData()
-    {
-        return ['{{ accountId }}' => $this->accountId, '{{ service }}' => $this->service];
     }
 }

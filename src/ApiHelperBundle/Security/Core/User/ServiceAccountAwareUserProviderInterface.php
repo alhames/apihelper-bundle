@@ -11,6 +11,7 @@
 
 namespace ApiHelperBundle\Security\Core\User;
 
+use ApiHelperBundle\Account\AbstractAccount;
 use ApiHelperBundle\Security\Core\Exception\ServiceAccountNotFoundException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -21,12 +22,11 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 interface ServiceAccountAwareUserProviderInterface extends UserProviderInterface
 {
     /**
-     * @param string     $service
-     * @param int|string $accountId
-     *
-     * @throws ServiceAccountNotFoundException if the user is not found
+     * @param AbstractAccount $account
      *
      * @return UserInterface
+     *
+     * @throws ServiceAccountNotFoundException if the user is not found
      */
-    public function loadUserByServiceAccount($service, $accountId);
+    public function loadUserByServiceAccount(AbstractAccount $account);
 }

@@ -21,6 +21,9 @@ abstract class AbstractAccount
     /** @var OAuth2ClientInterface */
     protected $client;
 
+    /** @var string[] */
+    protected $loaded = [];
+
     /** @var string */
     protected $service;
 
@@ -60,6 +63,12 @@ abstract class AbstractAccount
     /** @var \DateTime */
     protected $expiresAt;
 
+    /** @var array */
+    protected $friends;
+
+    /** @var string */
+    protected $picture;
+
     /**
      * AbstractAccount constructor.
      *
@@ -83,6 +92,7 @@ abstract class AbstractAccount
     {
         if (isset($data['access_token'])) {
             $this->accessToken = $data['access_token'];
+            $this->client->setAccessToken($data['access_token']);
         }
 
         if (isset($data['refresh_token'])) {
@@ -119,7 +129,7 @@ abstract class AbstractAccount
      */
     public function getId()
     {
-        if (null === $this->id) {
+        if (!in_array('id', $this->loaded, true)) {
             $this->load('id');
         }
 
@@ -127,11 +137,11 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getFirstName()
     {
-        if (null === $this->firstName) {
+        if (!in_array('first_name', $this->loaded, true)) {
             $this->load('first_name');
         }
 
@@ -139,11 +149,11 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLastName()
     {
-        if (null === $this->lastName) {
+        if (!in_array('last_name', $this->loaded, true)) {
             $this->load('last_name');
         }
 
@@ -151,11 +161,11 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLink()
     {
-        if (null === $this->link) {
+        if (!in_array('link', $this->loaded, true)) {
             $this->load('link');
         }
 
@@ -163,11 +173,11 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getEmail()
     {
-        if (null === $this->email) {
+        if (!in_array('email', $this->loaded, true)) {
             $this->load('email');
         }
 
@@ -175,11 +185,11 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getNickname()
     {
-        if (null === $this->nickname) {
+        if (!in_array('nickname', $this->loaded, true)) {
             $this->load('nickname');
         }
 
@@ -187,11 +197,11 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getGender()
     {
-        if (null === $this->gender) {
+        if (!in_array('gender', $this->loaded, true)) {
             $this->load('gender');
         }
 
@@ -199,11 +209,11 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getBirthday()
     {
-        if (null === $this->birthday) {
+        if (!in_array('birthday', $this->loaded, true)) {
             $this->load('birthday');
         }
 
@@ -211,11 +221,11 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLocation()
     {
-        if (null === $this->location) {
+        if (!in_array('location', $this->loaded, true)) {
             $this->load('location');
         }
 
@@ -227,7 +237,7 @@ abstract class AbstractAccount
      */
     public function getAccessToken()
     {
-        if (null === $this->accessToken) {
+        if (!in_array('access_token', $this->loaded, true)) {
             $this->load('access_token');
         }
 
@@ -235,11 +245,11 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getRefreshToken()
     {
-        if (null === $this->refreshToken) {
+        if (!in_array('refresh_token', $this->loaded, true)) {
             $this->load('refresh_token');
         }
 
@@ -247,15 +257,39 @@ abstract class AbstractAccount
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getExpiresAt()
     {
-        if (null === $this->expiresAt) {
+        if (!in_array('expires_at', $this->loaded, true)) {
             $this->load('expires_at');
         }
 
         return $this->expiresAt;
+    }
+
+    /**
+     * @return array List of friend ids
+     */
+    public function getFriends()
+    {
+        if (!in_array('friends', $this->loaded, true)) {
+            $this->load('friends');
+        }
+
+        return $this->friends ?: [];
+    }
+
+    /**
+     * @return string
+     */
+    public function getPicture()
+    {
+        if (!in_array('picture', $this->loaded, true)) {
+            $this->load('picture');
+        }
+
+        return $this->picture;
     }
 
     /**

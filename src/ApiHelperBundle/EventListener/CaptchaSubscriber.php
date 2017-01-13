@@ -93,7 +93,7 @@ class CaptchaSubscriber implements EventSubscriberInterface
         }
 
         if (!$this->captchaManager->check($request)) {
-            return $this->failureHandler->onAuthenticationFailure($request, new InvalidCaptchaException('Invalid captcha.'));
+            $event->setResponse($this->failureHandler->onAuthenticationFailure($request, new InvalidCaptchaException('Invalid captcha.')));
         }
     }
 

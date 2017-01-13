@@ -63,8 +63,7 @@ class ServiceAccountNotFoundException extends AuthenticationException
      */
     public function unserialize($str)
     {
-        list($this->account, $parentData) = unserialize($str);
-
-        parent::unserialize($parentData);
+        list($this->account, $parentStr) = unserialize($str);
+        parent::unserialize($parentStr);
     }
 }

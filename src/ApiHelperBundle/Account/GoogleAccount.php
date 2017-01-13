@@ -21,18 +21,37 @@ class GoogleAccount extends AbstractAccount
      */
     protected function load($option)
     {
-        if (in_array($option, ['id', 'first_name', 'last_name', 'link', 'email', 'nickname', 'gender'], true)) {
+        $options = ['id', 'first_name', 'last_name', 'link', 'email', 'nickname', 'gender', 'picture'];
+        if (in_array($option, $options, true)) {
             $data = $this->client->request('userinfo/v2/me');
+            $this->loaded = array_merge($this->loaded, $options);
 
             $this->id = $data['id'];
             $this->firstName = $data['given_name'];
             $this->lastName = $data['family_name'];
-            $this->link = isset($data['link']) ? $data['link'] : '';
-            $this->email = !empty($data['email']) ? $data['email'] : '';
-            $this->gender = (!empty($data['gender']) && in_array($data['gender'], ['male', 'female'], true)) ? $data['gender'] : '';
+
+            if (isset($data['link'])) {
+                $this->link =  $data['link'];
+            }
+
+            if (isset($data['email'])) {
+                $this->email = $data['email'];
+            }
+
+            if (isset($data['gender']) && in_array($data['gender'], ['male', 'female'], true)) {
+                $this->gender = $data['gender'];
+            }
 
             $pattern = '#^'.preg_quote($this->firstName, '#').' “(.+?)” '.preg_quote($this->lastName, '#').'$#iu';
-            $this->nickname = preg_match($pattern, $data['name'], $matches) ? $matches[1] : '';
+            if (preg_match($pattern, $data['name'], $matches)) {
+                $this->nickname = $matches[1];
+            }
+
+            if (isset($data['picture'])) {
+                $this->picture = $data['picture'];
+            }
+        } else {
+            $this->loaded[] = $option;
         }
     }
 }

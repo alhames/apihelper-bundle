@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the API Helper Bundle package.
+ *
+ * (c) Pavel Logachev <alhames@mail.ru>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiHelperBundle\Account;
 
 /**
@@ -31,7 +40,7 @@ class VkAccount extends AbstractAccount
     protected function load($option)
     {
         $options = ['id', 'first_name', 'last_name', 'nickname', 'link', 'gender', 'birthday', 'location', 'picture'];
-        if (in_array($option, $options)) {
+        if (in_array($option, $options, true)) {
             $fields = ['nickname', 'domain', 'sex', 'bdate', 'city', 'common_count', 'has_photo', 'photo_max_orig'];
             $data = $this->client->request('users.get', ['fields' => implode(',', $fields)])['response'][0];
             $this->loaded = array_merge($this->loaded, $options);
@@ -46,7 +55,7 @@ class VkAccount extends AbstractAccount
             }
 
             if (!empty($data['sex'])) {
-                $this->gender = $data['sex'] == 1 ? 'female' : 'male';
+                $this->gender = $data['sex'] === 1 ? 'female' : 'male';
             }
 
             if (!empty($data['bdate'])) {
@@ -61,7 +70,7 @@ class VkAccount extends AbstractAccount
                 $this->picture = $data['photo_max_orig'];
             }
 
-            if (0 == $data['common_count']) {
+            if (0 === $data['common_count']) {
                 $this->loaded[] = 'friends';
             }
         } elseif ('friends' === $option) {

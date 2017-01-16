@@ -31,7 +31,7 @@ class GoogleAccount extends AbstractAccount
             $this->lastName = $data['family_name'];
 
             if (isset($data['link'])) {
-                $this->link =  $data['link'];
+                $this->link = $data['link'];
             }
 
             if (isset($data['email'])) {

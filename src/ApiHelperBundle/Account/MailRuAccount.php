@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the API Helper Bundle package.
+ *
+ * (c) Pavel Logachev <alhames@mail.ru>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiHelperBundle\Account;
 
 /**
@@ -26,7 +35,7 @@ class MailRuAccount extends AbstractAccount
     protected function load($option)
     {
         $options = ['id', 'email', 'nickname', 'first_name', 'last_name', 'link', 'gender', 'birthday', 'location', 'picture'];
-        if (in_array($option, $options)) {
+        if (in_array($option, $options, true)) {
             $data = $this->client->request('users.getInfo')[0];
             $this->loaded = array_merge($this->loaded, $options);
 
@@ -50,7 +59,7 @@ class MailRuAccount extends AbstractAccount
                 $this->picture = $data['pic_big'];
             }
 
-            if (0 == $data['friends_count']) {
+            if (0 === $data['friends_count']) {
                 $this->loaded[] = 'friends';
             }
         } elseif ('friends' === $option) {

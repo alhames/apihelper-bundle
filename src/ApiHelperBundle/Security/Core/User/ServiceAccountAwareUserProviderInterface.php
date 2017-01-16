@@ -24,9 +24,9 @@ interface ServiceAccountAwareUserProviderInterface extends UserProviderInterface
     /**
      * @param AbstractAccount $account
      *
-     * @return UserInterface
-     *
      * @throws ServiceAccountNotFoundException if the user is not found
+     *
+     * @return UserInterface
      */
     public function loadUserByServiceAccount(AbstractAccount $account);
 }

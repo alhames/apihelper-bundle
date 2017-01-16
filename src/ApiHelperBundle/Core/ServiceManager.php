@@ -131,13 +131,13 @@ class ServiceManager
     public function getConnectSupportedServices()
     {
         $services = [];
-        
+
         foreach ($this->config as $alias => $config) {
             if ($config['security_connect']) {
                 $services[] = $alias;
             }
         }
-        
+
         return $services;
     }
 
@@ -151,7 +151,7 @@ class ServiceManager
         foreach ($this->config as $alias => $config) {
             if (true === $config['security_login']) {
                 $services[] = $alias;
-            } elseif (is_array($config['security_login']) && in_array($providerKey, $config['security_login'])) {
+            } elseif (is_array($config['security_login']) && in_array($providerKey, $config['security_login'], true)) {
                 $services[] = $alias;
             }
         }

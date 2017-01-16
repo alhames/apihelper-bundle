@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the API Helper Bundle package.
+ *
+ * (c) Pavel Logachev <alhames@mail.ru>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiHelperBundle\Account;
 
 /**
@@ -13,7 +22,7 @@ class OkAccount extends AbstractAccount
     protected function load($option)
     {
         $options = ['id', 'first_name', 'last_name', 'email', 'link', 'birthday', 'gender', 'location', 'picture'];
-        if (in_array($option, $options)) {
+        if (in_array($option, $options, true)) {
             $fields = ['uid',  'first_name', 'last_name', 'gender', 'birthday', 'location', 'email', 'pic_full'];
             $data = $this->client->request('users/getCurrentUser', ['fields' => implode(',', $fields)]);
             $this->loaded = array_merge($this->loaded, $options);
@@ -31,7 +40,7 @@ class OkAccount extends AbstractAccount
                 $this->birthday = new \DateTime((strlen($data['birthday']) > 5 ? '' : '0000-').$data['birthday']);
             }
 
-            if (!empty($data['gender']) && in_array($data['gender'], ['male', 'female'])) {
+            if (!empty($data['gender']) && in_array($data['gender'], ['male', 'female'], true)) {
                 $this->gender = $data['gender'];
             }
 

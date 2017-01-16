@@ -92,15 +92,18 @@ abstract class AbstractAccount
     {
         if (isset($data['access_token'])) {
             $this->accessToken = $data['access_token'];
+            $this->loaded[] = 'access_token';
             $this->client->setAccessToken($data['access_token']);
         }
 
         if (isset($data['refresh_token'])) {
             $this->refreshToken = $data['refresh_token'];
+            $this->loaded[] = 'refresh_token';
         }
 
         if (!empty($data['expires_in'])) {
             $this->expiresAt = new \DateTime('@'.(time() + $data['expires_in']));
+            $this->loaded[] = 'expires_at';
         }
 
         return $this;

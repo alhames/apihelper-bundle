@@ -20,7 +20,7 @@ class FacebookAccount extends AbstractAccount
      * @todo friends
      * @todo picture
      *
-     * @param string $option
+     * {@inheritdoc}
      */
     protected function load($option)
     {

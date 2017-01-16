@@ -14,50 +14,61 @@ class VkAccount extends AbstractAccount
     {
         if (isset($data['user_id'])) {
             $this->id = $data['user_id'];
+            $this->loaded[] = 'id';
         }
 
         if (isset($data['email'])) {
             $this->email = $data['email'];
+            $this->loaded[] = 'email';
         }
 
         return parent::init($data);
     }
 
     /**
-     * @param string $option
+     * {@inheritdoc}
      */
     protected function load($option)
     {
-        if (in_array($option, ['first_name', 'last_name', 'nickname', 'link', 'gender', 'birthday', 'location'])) {
-            $fields = ['nickname', 'screen_name', 'sex', 'bdate', 'city', 'common_count'];
-            $data = $this->client->request('users.get', ['fields' => implode(',', $fields)])[0];
+        $options = ['id', 'first_name', 'last_name', 'nickname', 'link', 'gender', 'birthday', 'location', 'picture'];
+        if (in_array($option, $options)) {
+            $fields = ['nickname', 'domain', 'sex', 'bdate', 'city', 'common_count', 'has_photo', 'photo_max_orig'];
+            $data = $this->client->request('users.get', ['fields' => implode(',', $fields)])['response'][0];
+            $this->loaded = array_merge($this->loaded, $options);
 
+            $this->id = $data['id'];
             $this->firstName = $data['first_name'];
             $this->lastName = $data['last_name'];
-            $this->nickname = !empty($data['nickname']) ? $data['nickname'] : '';
-            $this->link = 'https://vk.com/'.$data['screen_name'];
+            $this->link = 'https://vk.com/'.$data['domain'];
+
+            if (!empty($data['nickname'])) {
+                $this->nickname = $data['nickname'];
+            }
 
             if (!empty($data['sex'])) {
                 $this->gender = $data['sex'] == 1 ? 'female' : 'male';
             }
 
             if (!empty($data['bdate'])) {
-                $birthday = explode('.', $data['bdate']);
-                $birthdayString = isset($birthday[2]) ? $birthday[2] : '0000';
-                $birthdayString .= '-'.str_pad($birthday[1], 2, '0', STR_PAD_LEFT);
-                $birthdayString .= '-'.str_pad($birthday[0], 2, '0', STR_PAD_LEFT);
-                $this->birthday = new \DateTime($birthdayString);
+                $this->birthday = new \DateTime($data['bdate'].(strlen($data['bdate']) < 8 ? '.0000' : ''));
             }
 
-            $this->location = !empty($data['city']['title']) ? $data['city']['title'] : '';
+            if (!empty($data['city']['title'])) {
+                $this->location = $data['city']['title'];
+            }
+
+            if ($data['has_photo']) {
+                $this->picture = $data['photo_max_orig'];
+            }
 
             if (0 == $data['common_count']) {
-                $this->friends = [];
+                $this->loaded[] = 'friends';
             }
-        }
-
-        if ('friends' === $option) {
+        } elseif ('friends' === $option) {
             $this->friends = $this->client->request('friends.get')['items'];
+            $this->loaded[] = 'friends';
+        } else {
+            $this->loaded[] = $option;
         }
     }
 }

@@ -14,6 +14,7 @@ class MailRuAccount extends AbstractAccount
     {
         if (isset($data['x_mailru_vid'])) {
             $this->id = $data['x_mailru_vid'];
+            $this->loaded[] = 'id';
         }
 
         return parent::init($data);
@@ -24,8 +25,10 @@ class MailRuAccount extends AbstractAccount
      */
     protected function load($option)
     {
-        if (in_array($option, ['id', 'email', 'nickname', 'first_name', 'last_name', 'link', 'gender', 'birthday', 'location'])) {
+        $options = ['id', 'email', 'nickname', 'first_name', 'last_name', 'link', 'gender', 'birthday', 'location', 'picture'];
+        if (in_array($option, $options)) {
             $data = $this->client->request('users.getInfo')[0];
+            $this->loaded = array_merge($this->loaded, $options);
 
             $this->id = $data['uid'];
             $this->email = $data['email'];
@@ -36,25 +39,25 @@ class MailRuAccount extends AbstractAccount
             $this->gender = $data['sex'] ? 'female' : 'male';
 
             if (!empty($data['birthday'])) {
-                $birthday = explode('.', $data['birthday']);
-                $this->birthday = new \DateTime(
-                    (isset($birthday[2]) ? $birthday[2] : '0000')
-                    .'-'.str_pad($birthday[1], 2, '0', STR_PAD_LEFT)
-                    .'-'.str_pad($birthday[0], 2, '0', STR_PAD_LEFT)
-                );
+                $this->birthday = new \DateTime($data['birthday'].(strlen($data['birthday']) < 8 ? '.0000' : ''));
             }
 
             if (!empty($data['location']['city']['name'])) {
                 $this->location = $data['location']['city']['name'];
             }
 
-            if (0 == $data['friends_count']) {
-                $this->friends = [];
+            if ($data['has_pic']) {
+                $this->picture = $data['pic_big'];
             }
-        }
 
-        if ('friends' === $option) {
+            if (0 == $data['friends_count']) {
+                $this->loaded[] = 'friends';
+            }
+        } elseif ('friends' === $option) {
             $this->friends = $this->client->request('friends.get', ['ext' => 0]);
+            $this->loaded[] = 'friends';
+        } else {
+            $this->loaded[] = $option;
         }
     }
 }

@@ -12,6 +12,7 @@
 namespace ApiHelperBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 /**
@@ -32,15 +33,20 @@ class OAuthEvent extends Event
     /** @var TokenInterface */
     protected $token;
 
+    /** @var Request */
+    protected $request;
+
     /**
      * LoginEvent constructor.
      *
-     * @param string         $service
-     * @param string         $state
-     * @param TokenInterface $token
+     * @param Request             $request
+     * @param string              $service
+     * @param string              $state
+     * @param TokenInterface|null $token
      */
-    public function __construct($service, $state, TokenInterface $token = null)
+    public function __construct(Request $request, $service, $state, TokenInterface $token = null)
     {
+        $this->request = $request;
         $this->service = $service;
         $this->state = $state;
         $this->token = $token;
@@ -63,10 +69,18 @@ class OAuthEvent extends Event
     }
 
     /**
-     * @return TokenInterface
+     * @return TokenInterface|null
      */
     public function getToken()
     {
         return $this->token;
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequest()
+    {
+        return $this->request;
     }
 }

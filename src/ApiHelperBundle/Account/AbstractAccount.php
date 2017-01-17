@@ -102,7 +102,8 @@ abstract class AbstractAccount
         }
 
         if (!empty($data['expires_in'])) {
-            $this->expiresAt = new \DateTime('@'.(time() + $data['expires_in']));
+            $this->expiresAt = new \DateTime();
+            $this->expiresAt->add(new \DateInterval('PT'.$data['expires_in'].'S'));
             $this->loaded[] = 'expires_at';
         }
 

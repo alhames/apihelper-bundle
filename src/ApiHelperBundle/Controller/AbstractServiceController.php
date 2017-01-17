@@ -69,7 +69,7 @@ abstract class AbstractServiceController extends Controller
         $client->setRedirectUri($this->generateUri($request, $options[$providerKey]['check_path']));
 
         $token = $this->container->get('security.token_storage')->getToken();
-        $this->container->get('event_dispatcher')->dispatch(OAuthEvent::LOGIN_START, new OAuthEvent($service, $state, $token));
+        $this->container->get('event_dispatcher')->dispatch(OAuthEvent::LOGIN_START, new OAuthEvent($request, $service, $state, $token));
 
         return $this->redirect($client->getAuthorizationUrl($state));
     }
@@ -96,7 +96,7 @@ abstract class AbstractServiceController extends Controller
         $request->getSession()->set(Security::STATE_ID.$state, ['action' => Security::ACTION_CONNECT]);
 
         $token = $this->container->get('security.token_storage')->getToken();
-        $this->container->get('event_dispatcher')->dispatch(OAuthEvent::CONNECT_START, new OAuthEvent($service, $state, $token));
+        $this->container->get('event_dispatcher')->dispatch(OAuthEvent::CONNECT_START, new OAuthEvent($request, $service, $state, $token));
 
         return $this->redirect($client->getAuthorizationUrl($state));
     }
@@ -152,7 +152,7 @@ abstract class AbstractServiceController extends Controller
         }
 
         $token = $this->container->get('security.token_storage')->getToken();
-        $this->container->get('event_dispatcher')->dispatch(OAuthEvent::CONNECT_FINISH, new OAuthEvent($service, $state, $token));
+        $this->container->get('event_dispatcher')->dispatch(OAuthEvent::CONNECT_FINISH, new OAuthEvent($request, $service, $state, $token));
 
         return $response;
     }

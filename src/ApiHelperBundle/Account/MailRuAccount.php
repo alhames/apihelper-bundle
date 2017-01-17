@@ -59,7 +59,7 @@ class MailRuAccount extends AbstractAccount
                 $this->picture = $data['pic_big'];
             }
 
-            if (0 === $data['friends_count']) {
+            if (0 === (int) $data['friends_count']) {
                 $this->loaded[] = 'friends';
             }
         } elseif ('friends' === $option) {

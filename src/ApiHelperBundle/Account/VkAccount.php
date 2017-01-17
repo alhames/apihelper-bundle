@@ -55,7 +55,7 @@ class VkAccount extends AbstractAccount
             }
 
             if (!empty($data['sex'])) {
-                $this->gender = $data['sex'] === 1 ? 'female' : 'male';
+                $this->gender = (int) $data['sex'] === 1 ? 'female' : 'male';
             }
 
             if (!empty($data['bdate'])) {
@@ -70,11 +70,11 @@ class VkAccount extends AbstractAccount
                 $this->picture = $data['photo_max_orig'];
             }
 
-            if (0 === $data['common_count']) {
+            if (0 === (int) $data['common_count']) {
                 $this->loaded[] = 'friends';
             }
         } elseif ('friends' === $option) {
-            $this->friends = $this->client->request('friends.get')['items'];
+            $this->friends = $this->client->request('friends.get')['response']['items'];
             $this->loaded[] = 'friends';
         } else {
             $this->loaded[] = $option;

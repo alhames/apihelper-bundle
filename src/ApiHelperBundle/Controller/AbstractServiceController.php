@@ -130,7 +130,7 @@ abstract class AbstractServiceController extends Controller
 
         $code = $request->query->get('code');
         if (!$code) {
-            return $this->createErrorRedirect($request, 'invalid_code');
+            return $this->createErrorRedirect('invalid_code');
         }
 
         $account = $serviceManager->createAccount($service);

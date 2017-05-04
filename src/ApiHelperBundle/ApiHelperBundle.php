@@ -11,7 +11,6 @@
 
 namespace ApiHelperBundle;
 
-use ApiHelperBundle\DependencyInjection\ApiHelperExtension;
 use ApiHelperBundle\DependencyInjection\Security\Factory;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,13 +32,5 @@ class ApiHelperBundle extends Bundle
         $extension = $container->getExtension('security');
         $extension->addSecurityListenerFactory(new Factory\OAuthFactory());
         $extension->addSecurityListenerFactory(new Factory\SafeFormLoginFactory());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getContainerExtension()
-    {
-        return new ApiHelperExtension();
     }
 }

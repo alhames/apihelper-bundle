@@ -33,4 +33,16 @@ class ApiHelperBundle extends Bundle
         $extension->addSecurityListenerFactory(new Factory\OAuthFactory());
         $extension->addSecurityListenerFactory(new Factory\SafeFormLoginFactory());
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getContainerExtension()
+    {
+        if (null === $this->extension) {
+            $this->extension = $this->createContainerExtension();
+        }
+
+        return $this->extension;
+    }
 }

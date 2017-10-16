@@ -15,11 +15,11 @@
     "issues": "https://github.com/alhames/apihelper-bundle/issues"
   },
   "require": {
-    "php": ">=5.6.0",
+    "php": "^7.0",
     "symfony/framework-bundle": "^3.0",
     "symfony/security-bundle":  "^3.0",
-    "alhames/apihelper": "0.2.2",
-    "alhames/phphelper": "^1.0"
+    "alhames/apihelper": "^0.2",
+    "alhames/phphelper": "*"
   },
   "suggest": {
     "symfony/twig-bundle": "to use the Twig apihelper_captcha() function"

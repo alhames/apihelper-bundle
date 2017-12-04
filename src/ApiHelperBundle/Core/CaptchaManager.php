@@ -20,6 +20,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CaptchaManager
 {
+    const REQUEST_PARAMETER_ID = 'g-recaptcha-response';
+
     /** @var ReCaptchaClient  */
     protected $client;
 
@@ -134,7 +136,7 @@ class CaptchaManager
             return true;
         }
 
-        $captchaResponse = $request->get('g-recaptcha-response');
+        $captchaResponse = $request->request->get(self::REQUEST_PARAMETER_ID);
         if (empty($captchaResponse)) {
             return false;
         }

@@ -74,8 +74,6 @@ class CaptchaSubscriber implements EventSubscriberInterface
 
     /**
      * @param GetResponseEvent $event
-     *
-     * @return Response|null
      */
     public function onKernelRequest(GetResponseEvent $event)
     {
@@ -84,7 +82,7 @@ class CaptchaSubscriber implements EventSubscriberInterface
         }
 
         $request = $event->getRequest();
-        if ($this->options['post_only'] && !$request->isMethod('POST')) {
+        if ($this->options['post_only'] && !$request->isMethod('POST')) { // todo: support only post
             return;
         }
 

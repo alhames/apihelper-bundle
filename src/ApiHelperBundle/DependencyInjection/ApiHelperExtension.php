@@ -12,7 +12,7 @@
 namespace ApiHelperBundle\DependencyInjection;
 
 use ApiHelper\Core\OAuth2ClientInterface;
-use ApiHelperBundle\Controller\AbstractServiceController;
+use ApiHelperBundle\Controller\ServiceController;
 use PhpHelper\Str;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -92,14 +92,6 @@ class ApiHelperExtension extends Extension
                 }
             }
             unset($client);
-
-            if (!empty($config['controller'])) {
-                if (!class_exists($config['controller']) || !is_subclass_of($config['controller'], AbstractServiceController::class)) {
-                    throw new \LogicException(sprintf('Invalid controller class: %s.', $config['controller']));
-                }
-
-                $container->setParameter('apihelper.security.controller', preg_replace('#^\\\\?([a-z0-9_\\\\]+)\\\\Controller\\\\([a-z0-9_]+)Controller$#i', '$1:$2', $config['controller']));
-            }
 
             $container->setParameter('apihelper.security.requirements.login', implode('|', array_unique($loginServices)));
             $container->setParameter('apihelper.security.requirements.connect', implode('|', array_unique($connectServices)));

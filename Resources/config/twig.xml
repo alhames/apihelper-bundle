@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="apihelper.twig.extension" class="Alhames\ApiHelperBundle\Twig\Extension\ApiHelperExtension" public="false">
+            <argument type="service" id="apihelper.captcha.manager"/>
+            <argument type="service" id="request_stack"/>
+            <tag name="twig.extension" />
+        </service>
+    </services>
+</container>

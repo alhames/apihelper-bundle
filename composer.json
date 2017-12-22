@@ -2,6 +2,7 @@
   "name": "alhames/apihelper-bundle",
   "type": "symfony-bundle",
   "description": "Symfony ApiHelper Bundle",
+  "keywords": ["api", "bundle", "symfony"],
   "homepage": "https://github.com/alhames/apihelper-bundle",
   "license": "MIT",
   "authors": [
@@ -16,8 +17,9 @@
   },
   "require": {
     "php": "^7.0",
-    "symfony/framework-bundle": "^3.0",
-    "symfony/security-bundle":  "^3.0",
+    "symfony/framework-bundle": "^3.4 | ^4.0",
+    "symfony/security-bundle":  "^3.4 | ^4.0",
+    "symfony/yaml": "^3.4 | ^4.0",
     "alhames/apihelper": "^0.2",
     "alhames/phphelper": "*"
   },
@@ -25,6 +27,11 @@
     "symfony/twig-bundle": "to use the Twig apihelper_captcha() function"
   },
   "autoload": {
-    "psr-4": { "ApiHelperBundle\\": "src/ApiHelperBundle/" }
+    "psr-4": {
+      "Alhames\\ApiHelperBundle\\": ""
+    },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
   }
 }

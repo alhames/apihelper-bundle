@@ -11,6 +11,7 @@
 
 namespace Alhames\ApiHelperBundle\DependencyInjection\Security\Factory;
 
+use Alhames\ApiHelperBundle\EventListener\CaptchaSubscriber;
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\FormLoginFactory;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
@@ -47,9 +48,9 @@ class SafeFormLoginFactory extends FormLoginFactory
     public function createCaptchaListener(ContainerBuilder $container, $id, array $config)
     {
         $listenerId = 'apihelper.security.authentication.listener.captcha';
-        $listener = new DefinitionDecorator($listenerId);
-        $listener->replaceArgument(3, array_intersect_key($config, $this->options));
-        $listener->replaceArgument(4, new Reference($this->getFailureHandlerId($id)));
+        $listener = new DefinitionDecorator(CaptchaSubscriber::class);
+        $listener->setArgument('$options', array_intersect_key($config, $this->options));
+        $listener->setArgument('$failureHandler', new Reference($this->getFailureHandlerId($id)));
         $listener->addTag('kernel.event_subscriber');
 
         $listenerId .= '.'.$id;

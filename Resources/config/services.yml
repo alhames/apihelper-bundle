@@ -7,23 +7,16 @@ services:
 
   Alhames\ApiHelperBundle\Core\ServiceManager: ~
 
-  Alhames\ApiHelperBundle\Security\Http\Firewall\OAuthListener:
-    parent: 'security.authentication.listener.abstract'
-    abstract: true
-
   Alhames\ApiHelperBundle\Security\Core\Authentication\Provider\OAuthProvider:
     abstract: true
 
   Alhames\ApiHelperBundle\Core\CaptchaManager: ~
 
-  Alhames\ApiHelperBundle\EventListener\CaptchaSubscriber:
-    abstract: ture
+  Alhames\ApiHelperBundle\EventListener\CaptchaSubscriber: ~
+#    abstract: ture
 
   apihelper.manager: '@Alhames\ApiHelperBundle\Core\ServiceManager'
-  apihelper.security.authentication.listener: '@Alhames\ApiHelperBundle\Security\Http\Firewall\OAuthListener'
   apihelper.security.authentication.provider: '@Alhames\ApiHelperBundle\Security\Core\Authentication\Provider\OAuthProvider'
-
-  apihelper.security.authentication.listener.captcha: '@Alhames\ApiHelperBundle\EventListener\CaptchaSubscriber'
 
   Alhames\ApiHelperBundle\Controller\ServiceController:
     arguments:

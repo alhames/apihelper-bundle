@@ -40,6 +40,7 @@ class AlhamesApiHelperExtension extends Extension
         $loader->load('parameters.xml');
         $ymlLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $ymlLoader->load('services.yml');
+        $ymlLoader->load('oauth.yml');
 
         if (class_exists('Twig_Extension') && $config['captcha']['enabled']) {
             $loader->load('twig.xml');

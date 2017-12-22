@@ -5,7 +5,7 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="apihelper.twig.extension" class="Alhames\ApiHelperBundle\Twig\Extension\ApiHelperExtension" public="false">
-            <argument type="service" id="apihelper.captcha.manager"/>
+            <argument type="service" id="Alhames\ApiHelperBundle\Core\CaptchaManager"/>
             <argument type="service" id="request_stack"/>
             <tag name="twig.extension" />
         </service>

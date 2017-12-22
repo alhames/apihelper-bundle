@@ -60,9 +60,9 @@ class OAuthFactory extends AbstractFactory
         $provider = self::PREFIX.'authentication.provider.'.$id;
         $container
             ->setDefinition($provider, new DefinitionDecorator('apihelper.security.authentication.provider'))
-            ->replaceArgument(0, new Reference($userProviderId))
-            ->replaceArgument(1, new Reference('security.user_checker.'.$id))
-            ->replaceArgument(2, $id)
+            ->setArgument('$userProvider', new Reference($userProviderId))
+            ->setArgument('$userChecker', new Reference('security.user_checker.'.$id))
+            ->setArgument('$providerKey', $id)
         ;
 
         return $provider;

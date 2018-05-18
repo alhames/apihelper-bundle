@@ -23,9 +23,6 @@
     "alhames/apihelper": "^0.2",
     "alhames/phphelper": "*"
   },
-  "suggest": {
-    "symfony/twig-bundle": "to use the Twig apihelper_captcha() function"
-  },
   "autoload": {
     "psr-4": {
       "Alhames\\ApiHelperBundle\\": ""

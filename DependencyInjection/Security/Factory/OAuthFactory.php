@@ -12,8 +12,8 @@
 namespace Alhames\ApiHelperBundle\DependencyInjection\Security\Factory;
 
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -59,7 +59,7 @@ class OAuthFactory extends AbstractFactory
     {
         $provider = self::PREFIX.'authentication.provider.'.$id;
         $container
-            ->setDefinition($provider, new DefinitionDecorator('apihelper.security.authentication.provider'))
+            ->setDefinition($provider, new ChildDefinition('apihelper.security.authentication.provider'))
             ->setArgument('$userProvider', new Reference($userProviderId))
             ->setArgument('$userChecker', new Reference('security.user_checker.'.$id))
             ->setArgument('$providerKey', $id)

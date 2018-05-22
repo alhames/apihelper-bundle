@@ -17,11 +17,11 @@
   },
   "require": {
     "php": "^7.0",
-    "symfony/framework-bundle": "^3.4 | ^4.0",
-    "symfony/security-bundle":  "^3.4 | ^4.0",
-    "symfony/yaml": "^3.4 | ^4.0",
+    "symfony/framework-bundle": "^4.0",
+    "symfony/security-bundle":  "^4.0",
+    "symfony/yaml": "^4.0",
     "alhames/apihelper": "^0.2",
-    "alhames/phphelper": "*"
+    "alhames/phphelper": "^1.1"
   },
   "autoload": {
     "psr-4": {

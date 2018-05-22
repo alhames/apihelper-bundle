@@ -11,16 +11,12 @@
 
 namespace Alhames\ApiHelperBundle\DependencyInjection;
 
-use Alhames\ApiHelperBundle\Core\CaptchaManager;
 use Alhames\ApiHelperBundle\Core\ServiceManager;
-use ApiHelper\Client\ReCaptchaClient;
 use ApiHelper\Core\OAuth2ClientInterface;
 use PhpHelper\Str;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader;
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 /**
@@ -36,20 +32,19 @@ class AlhamesApiHelperExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('parameters.xml');
-        $ymlLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $ymlLoader->load('services.yml');
-        $ymlLoader->load('oauth.yml');
+//        $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
 
-        if (class_exists('Twig_Extension') && $config['captcha']['enabled']) {
-            $loader->load('twig.xml');
-        }
 
         $connectServices = [];
         $loginServices = [];
 
         if (!empty($config['services'])) {
+
+            $ymlLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+            $ymlLoader->load('services.yml');
+            $ymlLoader->load('oauth.yml');
+
+
             foreach ($config['services'] as $alias => &$client) {
                 if (null === $client) {
                     $client = [];
@@ -94,38 +89,5 @@ class AlhamesApiHelperExtension extends Extension
 
             $container->getDefinition(ServiceManager::class)->setArgument('$config', $config['services']);
         }
-
-        $this->initCaptcha($config['captcha'], $container);
-    }
-
-    /**
-     * @param array            $config
-     * @param ContainerBuilder $container
-     */
-    protected function initCaptcha(array $config, ContainerBuilder $container)
-    {
-        if (!$config['enabled']) {
-            $container->removeDefinition(CaptchaManager::class);
-
-            return;
-        }
-
-        if (empty($config['client_id']) || empty($config['client_secret'])) {
-            throw new \LogicException('client_id and client_secret must be defined.');
-        }
-
-        $captchaManager = $container->getDefinition(CaptchaManager::class);
-        $clientOptions = [
-            'client_id' => $config['client_id'],
-            'client_secret' => $config['client_secret'],
-        ];
-        $client = new Definition(ReCaptchaClient::class, [$clientOptions]);
-        $captchaManager->setArgument('$client', $client);
-        if (isset($config['storage'])) {
-            $captchaManager->setArgument('$storage', new Reference($config['storage']));
-        }
-        $captchaManager->setArgument('$routes', $config['routes']);
-        $captchaManager->setArgument('$ttl', $config['ttl']);
-        $captchaManager->setArgument('$storageKey', $config['storage_key']);
     }
 }

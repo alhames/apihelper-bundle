@@ -50,7 +50,7 @@ class ServiceController
     protected $dispatcher;
 
     /** @var HttpUtils */
-    protected $utils;
+    protected $httpUtils;
 
     /** @var TokenGeneratorInterface */
     protected $tokenGenerator;
@@ -65,7 +65,7 @@ class ServiceController
      * @param ServiceManager                   $serviceManager
      * @param TokenStorageInterface            $tokenStorage
      * @param EventDispatcherInterface         $dispatcher
-     * @param HttpUtils                        $utils
+     * @param HttpUtils                        $httpUtils
      * @param TokenGeneratorInterface          $tokenGenerator
      * @param ServiceAccountConnectorInterface $serviceAccountConnector
      */
@@ -74,7 +74,7 @@ class ServiceController
         ServiceManager $serviceManager,
         TokenStorageInterface $tokenStorage,
         EventDispatcherInterface $dispatcher,
-        HttpUtils $utils,
+        HttpUtils $httpUtils,
         TokenGeneratorInterface $tokenGenerator,
         ServiceAccountConnectorInterface $serviceAccountConnector
     ) {
@@ -82,7 +82,7 @@ class ServiceController
         $this->serviceManager = $serviceManager;
         $this->tokenStorage = $tokenStorage;
         $this->dispatcher = $dispatcher;
-        $this->utils = $utils;
+        $this->httpUtils = $httpUtils;
         $this->tokenGenerator = $tokenGenerator;
         $this->serviceAccountConnector = $serviceAccountConnector;
     }
@@ -106,15 +106,15 @@ class ServiceController
 
         $targetUrl = $this->determineTargetUrl($request, $this->options, $providerKey);
         if ($this->serviceAccountConnector->isAuthorized()) {
-            return new RedirectResponse($this->utils->generateUri($request, $targetUrl));
+            return new RedirectResponse($this->httpUtils->generateUri($request, $targetUrl));
         }
 
         $state = $this->tokenGenerator->generateToken();
-        $this->saveTargetPath($request->getSession(), $providerKey, $this->utils->generateUri($request, $targetUrl));
+        $this->saveTargetPath($request->getSession(), $providerKey, $this->httpUtils->generateUri($request, $targetUrl));
         $request->getSession()->set(Security::STATE_ID.$state, ['action' => Security::ACTION_LOGIN, 'provider' => $providerKey]);
 
         $client = $this->serviceManager->get($service);
-        $client->setRedirectUri($this->utils->generateUri($request, $this->options[$providerKey]['check_path']));
+        $client->setRedirectUri($this->httpUtils->generateUri($request, $this->options[$providerKey]['check_path']));
 
         $token = $this->tokenStorage->getToken();
         $this->dispatcher->dispatch(OAuthEvent::LOGIN_START, new OAuthEvent($request, $service, $state, $token));
@@ -233,7 +233,7 @@ class ServiceController
 
         if ($opt['use_referer']
             && ($targetUrl = $request->headers->get('Referer'))
-            && $targetUrl !== $this->utils->generateUri($request, $opt['login_path'])
+            && $targetUrl !== $this->httpUtils->generateUri($request, $opt['login_path'])
         ) {
             return $targetUrl;
         }

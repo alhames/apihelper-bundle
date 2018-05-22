@@ -31,6 +31,5 @@ class AlhamesApiHelperBundle extends Bundle
         /** @var $extension SecurityExtension */
         $extension = $container->getExtension('security');
         $extension->addSecurityListenerFactory(new Factory\OAuthFactory());
-        $extension->addSecurityListenerFactory(new Factory\SafeFormLoginFactory());
     }
 }

@@ -3,5 +3,6 @@ services:
   Alhames\ApiHelperBundle\Security\Http\Firewall\OAuthListener:
     parent: 'security.authentication.listener.abstract'
     abstract: true
+    public: false
 
   apihelper.security.authentication.listener: '@Alhames\ApiHelperBundle\Security\Http\Firewall\OAuthListener'
